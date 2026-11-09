@@ -1,11 +1,10 @@
-import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { pool } from './db.js';
+import { pool, safeDatabaseError } from './db.js';
 import { requireAdminPage } from './middleware/auth.js';
 import authRoutes from './routes/auth.js';
 import { adminRouter, publicRouter } from './routes/projects.js';
@@ -19,8 +18,9 @@ const dist = resolve(root, 'dist');
 const adminDir = resolve(dist, 'admin');
 const PgSession = connectPgSimple(session);
 
-if (isProduction && !process.env.SESSION_SECRET) {
-  console.error('SESSION_SECRET must be configured in production.');
+const sessionSecret = process.env.SESSION_SECRET?.trim();
+if (isProduction && (!sessionSecret || sessionSecret.length < 32 || sessionSecret === 'replace-with-a-long-random-secret')) {
+  console.error('SESSION_SECRET must be a non-placeholder value with at least 32 characters in production.');
   process.exit(1);
 }
 if (isProduction) app.set('trust proxy', 1);
@@ -49,7 +49,7 @@ app.use(express.urlencoded({ extended: false, limit: '32kb' }));
 const sessionMiddleware = session({
   name: 'abin.sid',
   store: new PgSession({ pool, tableName: 'sessions', createTableIfMissing: true, pruneSessionInterval: 15 * 60 }),
-  secret: process.env.SESSION_SECRET || 'development-only-change-this-session-secret',
+  secret: sessionSecret || 'development-only-change-this-session-secret',
   resave: false,
   saveUninitialized: false,
   rolling: true,
@@ -62,11 +62,20 @@ const sessionMiddleware = session({
   },
 });
 
+const allowedApiOrigins = new Set(isProduction
+  ? ['https://abin-exe-portfolio.onrender.com']
+  : ['http://localhost:5173', 'http://localhost:3000']);
+
 function sameOrigin(req, res, next) {
   const origin = req.get('origin');
   if (origin) {
     try {
-      if (new URL(origin).host !== req.get('host')) return res.status(403).json({ error: 'Cross-origin request rejected.' });
+      // The browser calls Vite at localhost:5173, then Vite proxies /api to
+      // Express at localhost:3000. Validate the browser origin explicitly;
+      // comparing it with the proxied Host header rejects valid dev requests.
+      if (!allowedApiOrigins.has(new URL(origin).origin)) {
+        return res.status(403).json({ error: 'Cross-origin request rejected.' });
+      }
     } catch { return res.status(403).json({ error: 'Invalid request origin.' }); }
   }
   next();
@@ -97,10 +106,14 @@ app.use((error, _req, res, _next) => {
   if (res.headersSent) return;
   const multerStatus = error.code === 'LIMIT_FILE_SIZE' ? 413 : error.name === 'MulterError' ? 400 : 0;
   const status = Number(error.status || multerStatus || (error.code === '23505' ? 409 : 500));
-  if (status >= 500) console.error('Request failed:', error);
+  if (status >= 500) {
+    const code = error.code ? ` (${String(error.code).slice(0, 32)})` : '';
+    console.error(`Request failed${code}.`);
+  }
   const message = error.code === '23505' ? 'That project slug is already in use.'
     : error.code === 'LIMIT_FILE_SIZE' ? 'Each image must be 12 MB or smaller.'
       : error.code === 'LIMIT_FILE_COUNT' ? 'Upload up to 12 images at a time.'
+        : error.code === 'DB_CONFIG' ? error.message
         : status < 500 ? error.message : 'The request could not be completed.';
   res.status(status).json({ error: message });
 });
@@ -111,7 +124,7 @@ const server = app.listen(port, '0.0.0.0', () => console.info(`ABIN.EXE server l
 try {
   await runMigrations();
 } catch (error) {
-  console.error('Database is unavailable or migrations failed. Static pages will remain available; the API will recover after the database is configured.', error.message);
+  console.error(`Database is unavailable or migrations failed. Static pages will remain available. ${safeDatabaseError(error)}`);
 }
 
 for (const signal of ['SIGINT', 'SIGTERM']) {

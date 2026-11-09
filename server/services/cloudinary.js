@@ -4,7 +4,10 @@ let configured = false;
 function configure() {
   if (configured) return;
   const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = process.env;
-  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
+  const hasPlaceholder = CLOUDINARY_CLOUD_NAME === 'your-cloud-name'
+    || CLOUDINARY_API_KEY === 'your-cloudinary-api-key'
+    || CLOUDINARY_API_SECRET === 'your-cloudinary-api-secret';
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET || hasPlaceholder) {
     throw Object.assign(new Error('Cloudinary is not configured. Add the Cloudinary environment variables before uploading images.'), { status: 503 });
   }
   cloudinary.config({ cloud_name: CLOUDINARY_CLOUD_NAME, api_key: CLOUDINARY_API_KEY, api_secret: CLOUDINARY_API_SECRET, secure: true });

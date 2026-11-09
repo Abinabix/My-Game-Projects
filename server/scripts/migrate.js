@@ -1,13 +1,13 @@
-import 'dotenv/config';
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { pool } from '../db.js';
+import { assertDatabaseConfigured, pool, safeDatabaseError } from '../db.js';
 
 const projectRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const migrationDir = resolve(projectRoot, 'migrations');
 
 export async function runMigrations() {
+  assertDatabaseConfigured();
   const client = await pool.connect();
   try {
     await client.query('SELECT pg_advisory_lock($1)', [847230194]);
@@ -35,9 +35,10 @@ export async function runMigrations() {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  runMigrations().then(() => pool.end()).catch(async (error) => {
-    console.error('Database migrations failed:', error);
-    await pool.end();
+  runMigrations().then(() => {
+    console.info('Database schema verified.');
+  }).catch((error) => {
+    console.error(`Database migrations failed. ${safeDatabaseError(error)}`);
     process.exitCode = 1;
-  });
+  }).finally(() => pool.end());
 }
