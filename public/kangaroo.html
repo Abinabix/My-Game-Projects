@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#121417">
+    <title>Kangaroo Dash | ABIX Playground</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #0b111e;
+            overflow: hidden;
+        }
+
+        .font-luckiest {
+            font-family: 'Luckiest Guy', cursive;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-panel {
+            background: rgba(18, 25, 42, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 170, 0, 0.08);
+        }
+
+        .btn-orange {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-orange:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(255, 140, 0, 0.6);
+        }
+
+        .btn-orange:active {
+            transform: translateY(1px) scale(0.97);
+        }
+
+        .scanline-overlay {
+            background-image: linear-gradient(rgba(120, 170, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(120, 170, 255, 0.035) 1px, transparent 1px);
+            background-size: 36px 36px;
+            opacity: 0.55;
+        }
+
+        :root {
+            --game-bg: #121417;
+            --game-panel: #1e2228;
+            --game-line: #303741;
+            --game-blue: #3478f6;
+            --game-blue-light: #78aaff;
+            --game-text: #f1f3f5;
+            --game-muted: #8d97a4;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--game-bg) !important;
+        }
+
+        #gameContainer {
+            background: var(--game-bg) !important;
+            border: 1px solid var(--game-line) !important;
+            border-radius: 0 !important;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(52, 120, 246, 0.08) !important;
+        }
+
+        #gameContainer .font-luckiest {
+            font-family: 'DM Mono', monospace !important;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+        }
+
+        #gameContainer .font-mono {
+            font-family: 'DM Mono', monospace !important;
+        }
+
+        #gameContainer .glass-panel {
+            background: rgba(30, 34, 40, 0.96);
+            border: 1px solid rgba(52, 120, 246, 0.5);
+            border-radius: 2px !important;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48), inset 0 1px rgba(120, 170, 255, 0.1);
+            backdrop-filter: blur(12px);
+        }
+
+        #gameContainer [class~="rounded-2xl"],
+        #gameContainer [class~="rounded-3xl"] {
+            border-radius: 2px !important;
+        }
+
+        #gameContainer [class*="text-amber-"],
+        #gameContainer [class*="text-orange-"],
+        #gameContainer [class*="text-yellow-"],
+        #gameContainer [class*="text-cyan-"] {
+            color: var(--game-blue-light) !important;
+        }
+
+        #gameContainer [class*="border-amber-"],
+        #gameContainer [class*="border-orange-"],
+        #gameContainer [class*="border-yellow-"] {
+            border-color: rgba(52, 120, 246, 0.48) !important;
+        }
+
+        #gameContainer [class*="bg-amber-"],
+        #gameContainer [class*="bg-orange-"],
+        #gameContainer [class*="bg-yellow-"] {
+            background-color: rgba(52, 120, 246, 0.2) !important;
+        }
+
+        #gameContainer [class*="shadow-amber-"],
+        #gameContainer [class*="shadow-orange-"],
+        #gameContainer [class*="shadow-yellow-"] {
+            --tw-shadow-color: rgba(52, 120, 246, 0.22) !important;
+        }
+
+        #gameContainer .btn-orange {
+            color: var(--game-text) !important;
+            background: linear-gradient(110deg, #3478f6, #285fca) !important;
+            border: 1px solid #78aaff !important;
+            border-radius: 2px !important;
+            box-shadow: 0 8px 28px rgba(52, 120, 246, 0.26) !important;
+            font-family: 'DM Mono', monospace !important;
+        }
+
+        #gameContainer .btn-orange:hover {
+            background: linear-gradient(110deg, #5790ff, #3478f6) !important;
+            box-shadow: 0 10px 32px rgba(52, 120, 246, 0.38) !important;
+        }
+
+        #gameContainer #startScreen,
+        #gameContainer #gameOverScreen {
+            background-color: rgba(18, 20, 23, 0.9) !important;
+        }
+
+        #gameContainer #startScreen h1 {
+            color: var(--game-blue-light) !important;
+            text-shadow: 0 2px 22px rgba(52, 120, 246, 0.38) !important;
+        }
+
+        #gameContainer #gameOverScreen h2 {
+            color: var(--game-blue-light) !important;
+            text-shadow: 0 2px 22px rgba(52, 120, 246, 0.34) !important;
+        }
+
+        #gameContainer #gameOverScreen .glass-panel > div:first-child {
+            background: rgba(52, 120, 246, 0.14) !important;
+            border-color: rgba(120, 170, 255, 0.5) !important;
+            box-shadow: 0 10px 28px rgba(52, 120, 246, 0.18) !important;
+            border-radius: 2px !important;
+        }
+
+        #gameContainer #startScreen > div > div:first-child {
+            background: linear-gradient(135deg, #3478f6, #1c3f82) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 12px 30px rgba(52, 120, 246, 0.25) !important;
+        }
+
+        #gameContainer #startScreen .animate-bounce {
+            animation: none !important;
+        }
+
+        #gameContainer .game-kicker {
+            margin: 0.2rem 0 0.65rem;
+            color: var(--game-muted);
+            font: 9px 'DM Mono', monospace;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        #gameContainer #startScreen [class*="bg-slate-950/"] {
+            background: rgba(18, 20, 23, 0.88) !important;
+            border-color: var(--game-line) !important;
+        }
+
+        #gameContainer #hud > div > div {
+            background: rgba(18, 20, 23, 0.84) !important;
+            border-color: rgba(120, 170, 255, 0.28) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.34) !important;
+        }
+
+        #gameContainer #soundBtn,
+        #gameContainer #mobileControls button {
+            background: rgba(30, 34, 40, 0.92) !important;
+            border: 1px solid rgba(120, 170, 255, 0.48) !important;
+            border-radius: 2px !important;
+            color: #a9c5ff !important;
+        }
+
+        #gameContainer #mobileControls button:active {
+            background: rgba(52, 120, 246, 0.6) !important;
+        }
+    </style>
+</head>
+<body class="w-screen h-screen m-0 p-0 flex items-center justify-center bg-slate-950 text-white">
+
+    <!-- Container Viewport -->
+    <div id="gameContainer" class="relative w-full max-w-5xl h-full max-h-[640px] overflow-hidden rounded-none md:rounded-3xl border-0 md:border border-amber-500/30 shadow-[0_0_50px_rgba(255,140,0,0.15)] bg-slate-950">
+        
+        <!-- Retro Scanline Overlay -->
+        <div class="scanline-overlay pointer-events-none absolute inset-0 z-10 opacity-30"></div>
+
+        <!-- Main 2D Canvas -->
+        <canvas id="gameCanvas" class="w-full h-full block cursor-pointer"></canvas>
+
+        <!-- In-Game HUD -->
+        <div id="hud" class="absolute top-0 left-0 w-full p-4 md:p-6 pointer-events-none flex justify-between items-start z-20">
+            <!-- Left Info: Score & Carrots -->
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3 bg-slate-900/85 border border-amber-500/40 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg">
+                    <span class="text-xs font-luckiest text-amber-400 tracking-wider">SCORE</span>
+                    <span id="scoreDisplay" class="font-luckiest text-xl md:text-2xl text-amber-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">000000</span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-900/85 border border-orange-500/40 backdrop-blur-md px-4 py-1.5 rounded-2xl shadow-lg">
+                    <span class="text-base">🥕</span>
+                    <span id="carrotDisplay" class="font-luckiest text-sm md:text-base text-orange-400">0</span>
+                    <span id="bonusPop" class="hidden text-xs font-luckiest text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-400/40 animate-bounce">+50</span>
+                </div>
+            </div>
+
+            <!-- Right Info: Speed & High Score -->
+            <div class="flex flex-col items-end gap-2">
+                <div class="flex items-center gap-3 bg-slate-900/85 border border-slate-700/80 backdrop-blur-md px-4 py-1.5 rounded-2xl shadow-lg">
+                    <span class="text-xs font-luckiest text-slate-400 tracking-wider">HIGH</span>
+                    <span id="hiScoreDisplay" class="font-luckiest text-sm md:text-base text-amber-400">000000</span>
+                </div>
+
+                <!-- Distance Progress -->
+                <div class="flex items-center gap-2 bg-slate-900/85 border border-slate-700/80 backdrop-blur-md px-3 py-1 rounded-2xl shadow-lg">
+                    <span class="text-[11px] font-luckiest text-cyan-400">DIST</span>
+                    <span id="distDisplay" class="font-luckiest text-xs text-cyan-200">0m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio Mute Toggle Button -->
+        <button id="soundBtn" class="absolute bottom-4 right-4 z-30 p-3 rounded-2xl bg-slate-900/85 border border-amber-500/40 text-amber-400 hover:text-white transition pointer-events-auto backdrop-blur-md shadow-lg">
+            <svg id="soundIconOn" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+            <svg id="soundIconOff" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/></svg>
+        </button>
+
+        <!-- On-Screen Mobile Touch Controls -->
+        <div id="mobileControls" class="absolute bottom-4 left-4 z-30 flex gap-2 pointer-events-auto sm:hidden">
+            <button id="btnLeft" class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 active:bg-amber-500/50 text-amber-300 font-luckiest text-lg flex items-center justify-center backdrop-blur-md">◀</button>
+            <button id="btnRight" class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/50 active:bg-amber-500/50 text-amber-300 font-luckiest text-lg flex items-center justify-center backdrop-blur-md">▶</button>
+            <button id="btnDown" class="w-12 h-12 rounded-2xl bg-orange-500/20 border border-orange-500/50 active:bg-orange-500/50 text-orange-300 font-luckiest text-lg flex items-center justify-center backdrop-blur-md">▼</button>
+            <button id="btnJump" class="w-14 h-12 rounded-2xl bg-yellow-500/30 border border-yellow-400/60 active:bg-yellow-500/60 text-yellow-300 font-luckiest text-xs flex items-center justify-center backdrop-blur-md">HOP!</button>
+        </div>
+
+        <!-- Start Screen Overlay -->
+        <div id="startScreen" class="absolute inset-0 z-40 flex items-center justify-center p-6 bg-slate-950/85 backdrop-blur-md">
+            <div class="glass-panel p-6 md:p-8 rounded-3xl max-w-md w-full text-center flex flex-col items-center">
+                
+                <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-3 animate-bounce">
+                    <span class="text-4xl">🦘</span>
+                </div>
+
+                <div class="game-kicker">ABIX.DEV / INTERACTIVE BUILD 001</div>
+                <h1 class="font-luckiest text-3xl md:text-4xl text-amber-400 tracking-wider mb-2 font-black drop-shadow-[0_2px_10px_rgba(255,170,0,0.5)]">
+                    KANGAROO DASH
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mb-6 font-semibold">An endless parkour prototype. Chain double jumps, collect carrots, and keep moving.</p>
+
+                <!-- Controls Guide Grid -->
+                <div class="w-full bg-slate-950/80 border border-slate-800 p-4 rounded-2xl mb-6 text-left space-y-2 text-xs text-slate-300 font-mono">
+                    <div class="flex justify-between items-center">
+                        <span class="text-amber-400 font-bold">MOVE LEFT / RIGHT:</span>
+                        <span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-amber-300">A / D or ◀ ▶</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-yellow-400 font-bold">HOP / DOUBLE HOP:</span>
+                        <span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-yellow-300">W / SPACE</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-orange-400 font-bold">FAST DROP:</span>
+                        <span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-orange-300">S or ▼</span>
+                    </div>
+                </div>
+
+                <button id="startBtn" class="btn-orange w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-slate-950 font-luckiest text-base tracking-widest uppercase cursor-pointer border border-amber-300/40">
+                    START RUN
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div id="gameOverScreen" class="hidden absolute inset-0 z-40 flex items-center justify-center p-6 bg-slate-950/90 backdrop-blur-md">
+            <div class="glass-panel p-6 md:p-8 rounded-3xl max-w-md w-full text-center flex flex-col items-center">
+                
+                <div class="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/50 flex items-center justify-center mb-3 shadow-lg shadow-red-500/20">
+                    <span class="text-3xl">💥</span>
+                </div>
+
+                <h2 class="font-luckiest text-3xl text-rose-500 font-black mb-1 drop-shadow-[0_2px_10px_rgba(244,63,94,0.5)]">RUN OVER</h2>
+                <p class="text-slate-400 text-xs font-luckiest tracking-widest mb-6">PARKOUR SESSION ENDED</p>
+
+                <!-- Final Score Card -->
+                <div class="w-full bg-slate-950/80 border border-slate-800 p-4 rounded-2xl mb-6 flex justify-around text-center font-luckiest">
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">SCORE</div>
+                        <div id="finalScore" class="text-xl md:text-2xl text-amber-400">000000</div>
+                    </div>
+                    <div class="w-px bg-slate-800"></div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">CARROTS</div>
+                        <div id="finalCarrots" class="text-xl md:text-2xl text-orange-400">0 🥕</div>
+                    </div>
+                    <div class="w-px bg-slate-800"></div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">BEST</div>
+                        <div id="finalHiScore" class="text-xl md:text-2xl text-yellow-400">000000</div>
+                    </div>
+                </div>
+
+                <button id="restartBtn" class="btn-orange w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-slate-950 font-luckiest text-base tracking-widest uppercase cursor-pointer border border-amber-300/40">
+                    RUN AGAIN
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. SYNTH AUDIO SOUND ENGINE
+        // ==========================================
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+
+            init() {
+                if (this.ctx) return;
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioCtx();
+            }
+
+            playHop(isDouble = false) {
+                if (!this.ctx || this.muted) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = isDouble ? 'sine' : 'triangle';
+                const startFreq = isDouble ? 340 : 220;
+                const endFreq = isDouble ? 680 : 480;
+
+                osc.frequency.setValueAtTime(startFreq, now);
+                osc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.12);
+
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            }
+
+            playSpring() {
+                if (!this.ctx || this.muted) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, now);
+                osc.frequency.exponentialRampToValueAtTime(850, now + 0.22);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.22);
+            }
+
+            playCarrot() {
+                if (!this.ctx || this.muted) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(659.25, now); // E5
+                osc.frequency.setValueAtTime(987.77, now + 0.06); // B5
+
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.16);
+            }
+
+            playLand() {
+                if (!this.ctx || this.muted) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.08);
+
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            }
+
+            playCrash() {
+                if (!this.ctx || this.muted) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.exponentialRampToValueAtTime(30, now + 0.4);
+
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+        }
+
+        const sound = new SoundEngine();
+
+        // ==========================================
+        // 2. CANVAS & ENGINE SETUP
+        // ==========================================
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('gameContainer');
+
+        let width = 900;
+        let height = 500;
+
+        function resizeCanvas() {
+            width = container.clientWidth;
+            height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Game State Variables
+        let gameState = 'START'; // 'START', 'RUNNING', 'GAMEOVER'
+        let score = 0;
+        let carrotsCollected = 0;
+        let hiScore = parseInt(localStorage.getItem('kangaroo_dash_hi') || '0', 10);
+        let worldScrollX = 0;
+        let baseWorldSpeed = 3.8;
+        let currentSpeed = baseWorldSpeed;
+        let lastTimestamp = 0;
+
+        // Player Controls Object
+        const keys = {
+            left: false,
+            right: false,
+            up: false,
+            down: false
+        };
+
+        // Kangaroo Player Character
+        const player = {
+            x: 120,
+            y: 200,
+            width: 36,
+            height: 48,
+            vx: 0,
+            vy: 0,
+            speed: 380,
+            gravity: 1550,
+            jumpForce: -620,
+            jumpCount: 0,
+            maxJumps: 2,
+            isGrounded: false,
+            facing: 'right',
+            animTime: 0,
+            legAngle: 0,
+
+            reset() {
+                this.x = 120;
+                this.y = 150;
+                this.vx = 0;
+                this.vy = 0;
+                this.jumpCount = 0;
+                this.isGrounded = false;
+                this.facing = 'right';
+            }
+        };
+
+        // World Entities Arrays
+        let platforms = [];
+        let collectibles = [];
+        let hazards = [];
+        let particles = [];
+        let nextPlatformX = 0;
+
+        // Parallax Mountain & Tree Scenery Generator
+        let mountains = [];
+        let trees = [];
+        function initScenery() {
+            mountains = [];
+            trees = [];
+            for (let i = 0; i < 10; i++) {
+                mountains.push({
+                    x: i * 140,
+                    w: 180 + Math.random() * 90,
+                    h: 120 + Math.random() * 100
+                });
+            }
+            for (let i = 0; i < 16; i++) {
+                trees.push({
+                    x: i * 90,
+                    h: 50 + Math.random() * 40
+                });
+            }
+        }
+        initScenery();
+
+        // ==========================================
+        // 3. PROCEDURAL PLATFORM & WORLD GENERATOR
+        // ==========================================
+        function createPlatform(x, y, width, type = 'NORMAL') {
+            const platform = {
+                x, y, width, height: 24,
+                type, // 'NORMAL', 'MOVING', 'CRUMBLING', 'SPRING'
+                offsetY: 0,
+                moveDir: 1,
+                crumpleTimer: -1,
+                broken: false
+            };
+
+            platforms.push(platform);
+
+            // Add Hazard or Collectibles on top of platform
+            if (type === 'NORMAL' && width > 120 && Math.random() < 0.4) {
+                // Add spike hazard
+                hazards.push({
+                    x: x + width * 0.4,
+                    y: y - 16,
+                    width: 24,
+                    height: 16
+                });
+            } else {
+                // Add Carrots line
+                const carrotCount = Math.floor(Math.random() * 3) + 1;
+                for (let i = 0; i < carrotCount; i++) {
+                    collectibles.push({
+                        x: x + (width / (carrotCount + 1)) * (i + 1),
+                        y: y - 32 - Math.sin(i) * 15,
+                        radius: 9,
+                        collected: false
+                    });
+                }
+            }
+
+            return platform;
+        }
+
+        function generateInitialWorld() {
+            platforms = [];
+            collectibles = [];
+            hazards = [];
+            particles = [];
+
+            // Starting safe long platform
+            createPlatform(0, height - 120, 360, 'NORMAL');
+            nextPlatformX = 360;
+
+            // Fill initial view
+            while (nextPlatformX < width + 600) {
+                spawnNextPlatformGroup();
+            }
+        }
+
+        function spawnNextPlatformGroup() {
+            const gap = 70 + Math.random() * 110;
+            const pWidth = 100 + Math.random() * 160;
+
+            // Height variation
+            const prevY = platforms.length > 0 ? platforms[platforms.length - 1].y : height - 120;
+            let pY = prevY + (Math.random() * 140 - 70);
+            pY = Math.max(height * 0.35, Math.min(height - 90, pY));
+
+            // Platform type selection
+            const typeRand = Math.random();
+            let pType = 'NORMAL';
+            if (typeRand < 0.25) pType = 'MOVING';
+            else if (typeRand < 0.45) pType = 'SPRING';
+            else if (typeRand < 0.65) pType = 'CRUMBLING';
+
+            createPlatform(nextPlatformX + gap, pY, pWidth, pType);
+            nextPlatformX += gap + pWidth;
+        }
+
+        // ==========================================
+        // 4. PARTICLE EFFECTS
+        // ==========================================
+        function spawnParticles(x, y, color, count = 6, size = 3) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 140,
+                    vy: (Math.random() - 0.7) * 120,
+                    color,
+                    size: Math.random() * size + 1.5,
+                    life: 1.0
+                });
+            }
+        }
+
+        function updateParticles(dt) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt * 2.4;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function drawParticles() {
+            particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        // ==========================================
+        // 5. INPUT LISTENERS
+        // ==========================================
+        function handleJump() {
+            sound.init();
+            if (gameState === 'START' || gameState === 'GAMEOVER') {
+                startGame();
+                return;
+            }
+            if (gameState === 'RUNNING') {
+                if (player.isGrounded || player.jumpCount < player.maxJumps) {
+                    player.vy = player.jumpForce;
+                    player.jumpCount++;
+                    player.isGrounded = false;
+                    const isDouble = player.jumpCount === 2;
+                    sound.playHop(isDouble);
+
+                    // Dust cloud particle at tail/feet
+                    spawnParticles(
+                        player.x + player.width / 2,
+                        player.y + player.height,
+                        isDouble ? '#78aaff' : '#b9cce3',
+                        isDouble ? 10 : 6
+                    );
+                }
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'a' || k === 'arrowleft') keys.left = true;
+            if (k === 'd' || k === 'arrowright') keys.right = true;
+            if (k === 'w' || k === 'arrowup' || k === ' ') {
+                e.preventDefault();
+                if (!keys.up) handleJump();
+                keys.up = true;
+            }
+            if (k === 's' || k === 'arrowdown') {
+                e.preventDefault();
+                keys.down = true;
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'a' || k === 'arrowleft') keys.left = false;
+            if (k === 'd' || k === 'arrowright') keys.right = false;
+            if (k === 'w' || k === 'arrowup' || k === ' ') keys.up = false;
+            if (k === 's' || k === 'arrowdown') keys.down = false;
+        });
+
+        // Touch Control Elements
+        const btnLeft = document.getElementById('btnLeft');
+        const btnRight = document.getElementById('btnRight');
+        const btnDown = document.getElementById('btnDown');
+        const btnJump = document.getElementById('btnJump');
+
+        const bindTouch = (elem, pressFn, releaseFn) => {
+            elem.addEventListener('touchstart', (e) => { e.preventDefault(); pressFn(); });
+            elem.addEventListener('touchend', (e) => { e.preventDefault(); releaseFn(); });
+        };
+
+        bindTouch(btnLeft, () => keys.left = true, () => keys.left = false);
+        bindTouch(btnRight, () => keys.right = true, () => keys.right = false);
+        bindTouch(btnDown, () => keys.down = true, () => keys.down = false);
+        bindTouch(btnJump, () => { handleJump(); keys.up = true; }, () => keys.up = false);
+
+        canvas.addEventListener('mousedown', () => handleJump());
+
+        // Audio Toggle
+        const soundBtn = document.getElementById('soundBtn');
+        soundBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sound.init();
+            sound.muted = !sound.muted;
+            document.getElementById('soundIconOn').classList.toggle('hidden', sound.muted);
+            document.getElementById('soundIconOff').classList.toggle('hidden', !sound.muted);
+        });
+
+        // Start & Restart Buttons
+        document.getElementById('startBtn').addEventListener('click', startGame);
+        document.getElementById('restartBtn').addEventListener('click', startGame);
+
+        // ==========================================
+        // 6. GAME LIFECYCLE
+        // ==========================================
+        function startGame() {
+            sound.init();
+            gameState = 'RUNNING';
+            score = 0;
+            carrotsCollected = 0;
+            worldScrollX = 0;
+            currentSpeed = baseWorldSpeed;
+            player.reset();
+            generateInitialWorld();
+
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('hiScoreDisplay').textContent = String(hiScore).padStart(6, '0');
+        }
+
+        function triggerGameOver() {
+            gameState = 'GAMEOVER';
+            sound.playCrash();
+
+            spawnParticles(player.x + player.width / 2, player.y + player.height / 2, '#ff4444', 20, 5);
+
+            if (score > hiScore) {
+                hiScore = score;
+                localStorage.setItem('kangaroo_dash_hi', hiScore);
+            }
+
+            document.getElementById('finalScore').textContent = String(score).padStart(6, '0');
+            document.getElementById('finalCarrots').textContent = carrotsCollected + ' 🥕';
+            document.getElementById('finalHiScore').textContent = String(hiScore).padStart(6, '0');
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // 7. PHYSICS & GAME UPDATE LOOP
+        // ==========================================
+        function update(dt) {
+            if (gameState !== 'RUNNING') return;
+
+            // Progressive World Acceleration
+            currentSpeed = baseWorldSpeed + Math.min(6, worldScrollX * 0.00015);
+            worldScrollX += currentSpeed * dt * 60;
+
+            // Horizontal Input Handling (A/D or Arrows)
+            player.vx = 0;
+            if (keys.left) {
+                player.vx = -player.speed;
+                player.facing = 'left';
+            }
+            if (keys.right) {
+                player.vx = player.speed;
+                player.facing = 'right';
+            }
+
+            // Move player position horizontally
+            player.x += player.vx * dt;
+            player.x = Math.max(10, Math.min(width - player.width - 10, player.x));
+
+            // Fast Drop (S or Down Arrow)
+            if (keys.down && !player.isGrounded) {
+                player.vy += 800 * dt;
+            }
+
+            // Apply Gravity
+            player.vy += player.gravity * dt;
+            player.y += player.vy * dt;
+
+            // Check Platforms Collision
+            let landed = false;
+            platforms.forEach(p => {
+                if (p.broken) return;
+
+                // Move platforms if MOVING type
+                if (p.type === 'MOVING') {
+                    p.offsetY += p.moveDir * dt * 35;
+                    if (Math.abs(p.offsetY) > 40) p.moveDir *= -1;
+                }
+
+                // Crumbling Platform timer
+                if (p.crumpleTimer > 0) {
+                    p.crumpleTimer -= dt;
+                    if (p.crumpleTimer <= 0) p.broken = true;
+                }
+
+                const platY = p.y + p.offsetY;
+
+                // AABB Platform Landing Check (falling downwards)
+                if (
+                    player.vy > 0 &&
+                    player.x + player.width > p.x - worldScrollX &&
+                    player.x < p.x - worldScrollX + p.width &&
+                    player.y + player.height >= platY &&
+                    player.y + player.height <= platY + p.height + 14
+                ) {
+                    player.y = platY - player.height;
+                    player.vy = 0;
+                    landed = true;
+
+                    if (!player.isGrounded) {
+                        sound.playLand();
+                        spawnParticles(player.x + player.width / 2, platY, '#a9c5ff', 5);
+                    }
+                    player.isGrounded = true;
+                    player.jumpCount = 0;
+
+                    // Spring Pad Jump boost
+                    if (p.type === 'SPRING') {
+                        player.vy = player.jumpForce * 1.45;
+                        player.isGrounded = false;
+                        sound.playSpring();
+                        spawnParticles(player.x + player.width / 2, platY, '#78aaff', 12);
+                    }
+
+                    // Start Crumbling Timer
+                    if (p.type === 'CRUMBLING' && p.crumpleTimer < 0) {
+                        p.crumpleTimer = 0.45;
+                    }
+                }
+            });
+
+            if (!landed) player.isGrounded = false;
+
+            // Check Collectibles Pickup
+            collectibles.forEach(c => {
+                if (c.collected) return;
+                const renderX = c.x - worldScrollX;
+                const pCenterX = player.x + player.width / 2;
+                const pCenterY = player.y + player.height / 2;
+
+                if (Math.hypot(pCenterX - renderX, pCenterY - c.y) < player.width / 2 + c.radius + 4) {
+                    c.collected = true;
+                    carrotsCollected++;
+                    sound.playCarrot();
+                    spawnParticles(renderX, c.y, '#ffa500', 10);
+
+                    // Bonus pop notification
+                    const pop = document.getElementById('bonusPop');
+                    pop.classList.remove('hidden');
+                    setTimeout(() => pop.classList.add('hidden'), 500);
+                }
+            });
+
+            // Check Hazards Collision
+            hazards.forEach(h => {
+                const renderX = h.x - worldScrollX;
+                if (
+                    player.x < renderX + h.width &&
+                    player.x + player.width > renderX &&
+                    player.y < h.y + h.height &&
+                    player.y + player.height > h.y
+                ) {
+                    triggerGameOver();
+                }
+            });
+
+            // Fall into pit (Game Over)
+            if (player.y > height + 50) {
+                triggerGameOver();
+            }
+
+            // Recycle & Spawn platforms off-screen
+            platforms = platforms.filter(p => p.x - worldScrollX + p.width > -100);
+            collectibles = collectibles.filter(c => c.x - worldScrollX > -50);
+            hazards = hazards.filter(h => h.x - worldScrollX > -50);
+
+            while (nextPlatformX - worldScrollX < width + 400) {
+                spawnNextPlatformGroup();
+            }
+
+            // Score Calculation
+            score = Math.floor(worldScrollX * 0.1) + (carrotsCollected * 50);
+
+            // Update HUD
+            document.getElementById('scoreDisplay').textContent = String(score).padStart(6, '0');
+            document.getElementById('carrotDisplay').textContent = carrotsCollected;
+            document.getElementById('distDisplay').textContent = Math.floor(worldScrollX * 0.05) + 'm';
+
+            updateParticles(dt);
+        }
+
+        // ==========================================
+        // 8. GRAPHICS & RENDERING LOOP
+        // ==========================================
+        function draw() {
+            // Dynamic Day-Night Gradient Shift based on distance
+            const dayCycle = (worldScrollX * 0.0003) % (Math.PI * 2);
+            const nightFactor = (Math.sin(dayCycle) + 1) / 2; // 0 to 1
+
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+            if (nightFactor > 0.5) {
+                // Sunset / Night Palette
+                skyGrad.addColorStop(0, '#0e1117');
+                skyGrad.addColorStop(0.6, '#151b24');
+                skyGrad.addColorStop(1, '#202a37');
+            } else {
+                // Day / Sunrise Palette
+                skyGrad.addColorStop(0, '#182332');
+                skyGrad.addColorStop(0.6, '#223246');
+                skyGrad.addColorStop(1, '#34485d');
+            }
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Sun / Moon Glow
+            ctx.save();
+            ctx.fillStyle = '#a9c5ff';
+            ctx.shadowColor = '#3478f6';
+            ctx.shadowBlur = 25;
+            ctx.beginPath();
+            ctx.arc(width * 0.8, 90, 32, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Parallax Mountains (Distant)
+            ctx.fillStyle = nightFactor > 0.5 ? '#141a22' : '#1d2b3a';
+            mountains.forEach(m => {
+                const renderX = (m.x - worldScrollX * 0.15) % (width + 200);
+                const x = renderX < -200 ? renderX + width + 200 : renderX;
+                ctx.beginPath();
+                ctx.moveTo(x, height);
+                ctx.lineTo(x + m.w / 2, height - m.h);
+                ctx.lineTo(x + m.w, height);
+                ctx.fill();
+            });
+
+            // Parallax Trees (Mid-ground)
+            ctx.fillStyle = nightFactor > 0.5 ? '#18222e' : '#26394d';
+            trees.forEach(t => {
+                const renderX = (t.x - worldScrollX * 0.35) % (width + 100);
+                const x = renderX < -100 ? renderX + width + 100 : renderX;
+                ctx.fillRect(x + 12, height - t.h, 6, t.h);
+                ctx.beginPath();
+                ctx.arc(x + 15, height - t.h, 20, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw Platforms
+            platforms.forEach(p => {
+                if (p.broken) return;
+                const rx = p.x - worldScrollX;
+                const ry = p.y + p.offsetY;
+
+                ctx.save();
+                if (p.type === 'SPRING') {
+                    ctx.fillStyle = '#3478f6';
+                    ctx.fillRect(rx, ry, p.width, p.height);
+                    ctx.fillStyle = '#a9c5ff';
+                    ctx.fillRect(rx + p.width * 0.3, ry - 6, p.width * 0.4, 6);
+                } else if (p.type === 'CRUMBLING') {
+                    ctx.fillStyle = p.crumpleTimer > 0 ? '#5790ff' : '#314762';
+                    ctx.fillRect(rx, ry, p.width, p.height);
+                    // Cracks detail
+                    ctx.strokeStyle = '#c7d9ff';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(rx + 10, ry + 4); ctx.lineTo(rx + 25, ry + 18);
+                    ctx.moveTo(rx + p.width - 20, ry + 2); ctx.lineTo(rx + p.width - 35, ry + 20);
+                    ctx.stroke();
+                } else if (p.type === 'MOVING') {
+                    ctx.fillStyle = '#344b6b';
+                    ctx.fillRect(rx, ry, p.width, p.height);
+                    ctx.fillStyle = '#78aaff';
+                    ctx.fillRect(rx + 4, ry + 4, p.width - 8, 3);
+                } else {
+                    // Standard Grass Platform
+                    ctx.fillStyle = '#4c83d5';
+                    ctx.fillRect(rx, ry, p.width, 6);
+                    ctx.fillStyle = '#2c4057';
+                    ctx.fillRect(rx, ry + 6, p.width, p.height - 6);
+                }
+                ctx.restore();
+            });
+
+            // Draw Hazards (Spikes)
+            hazards.forEach(h => {
+                const rx = h.x - worldScrollX;
+                ctx.fillStyle = '#d35461';
+                ctx.beginPath();
+                ctx.moveTo(rx, h.y + h.height);
+                ctx.lineTo(rx + h.width / 2, h.y);
+                ctx.lineTo(rx + h.width, h.y + h.height);
+                ctx.fill();
+            });
+
+            // Draw Collectible Carrots
+            collectibles.forEach(c => {
+                if (c.collected) return;
+                const rx = c.x - worldScrollX;
+                const hoverY = c.y + Math.sin(worldScrollX * 0.05 + c.x) * 4;
+
+                ctx.save();
+                // Carrot Body
+                ctx.fillStyle = '#ff7b00';
+                ctx.beginPath();
+                ctx.arc(rx, hoverY, c.radius, 0, Math.PI * 2);
+                ctx.fill();
+                // Leaf Green Top
+                ctx.fillStyle = '#85cdb8';
+                ctx.beginPath();
+                ctx.arc(rx, hoverY - c.radius, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            // Draw Kangaroo Player
+            ctx.save();
+            const px = player.x;
+            const py = player.y;
+
+            ctx.translate(px + player.width / 2, py + player.height / 2);
+            if (player.facing === 'left') ctx.scale(-1, 1);
+
+            // Kangaroo Body Color
+            ctx.fillStyle = '#bf754a'; // Warm kangaroo brown contrasts with the cool world palette
+
+            // Tail
+            ctx.beginPath();
+            ctx.ellipse(-14, 12, 14, 6, -Math.PI / 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Torso / Body
+            ctx.beginPath();
+            ctx.ellipse(0, 4, 15, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Head & Ears
+            ctx.beginPath();
+            ctx.arc(8, -18, 11, 0, Math.PI * 2); // Head
+            ctx.fill();
+
+            // Ears
+            ctx.beginPath();
+            ctx.ellipse(4, -30, 4, 10, -Math.PI / 12, 0, Math.PI * 2);
+            ctx.ellipse(10, -30, 4, 10, Math.PI / 12, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eye
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(12, -20, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(13, -20, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Powerful Kangaroo Legs (Paws)
+            ctx.fillStyle = '#925838';
+            if (!player.isGrounded) {
+                // Tucked legs during hop
+                ctx.fillRect(-10, 16, 18, 8);
+            } else {
+                // Standing / Running Paws
+                ctx.fillRect(-12, 18, 22, 6);
+            }
+
+            ctx.restore();
+
+            // Render Particle Engine
+            drawParticles();
+        }
+
+        // ==========================================
+        // 9. ANIMATION LOOP WITH CAPPED DELTA TIME
+        // ==========================================
+        function gameLoop(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            let dt = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            if (dt > 0.05) dt = 0.05; // Cap dt on tab switch
+
+            update(dt);
+            draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

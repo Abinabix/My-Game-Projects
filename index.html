@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121417" />
+  <meta name="description" content="Abin — Technical Artist and 3D Environment Developer. Interactive worlds, real-time environments and game experiences." />
+  <title>ABIX.DEV — Technical Artist & Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#home"><span class="brand-mark">A<span>.</span></span><span>ABIX<span class="muted">.DEV</span></span></a>
+    <div class="system-status"><span class="status-dot"></span> SYSTEM ONLINE <i></i> BUILD: RELEASE <i></i> MODE: CANVAS</div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+    <nav id="nav"><a class="active" href="#home">HOME</a><a href="#playground">PLAYGROUND</a><a href="#projects">PROJECTS</a><a href="#about">ABOUT</a><a href="#contact">CONTACT</a></nav>
+  </header>
+
+  <main>
+    <section class="hero section-wrap" id="home">
+      <div class="hero-grid"></div><div class="hero-glow"></div>
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> PORTFOLIO / 2026 <span class="eyebrow-tag">[ IN DEVELOPMENT ]</span></div>
+        <h1>CRAFTING<br>IMMERSIVE<br><span class="outline-word">WORLDS.</span><br><span class="blue-word hero-engine">POWERED BY UNREAL.</span></h1>
+        <p class="hero-desc">I’m <strong>Abin</strong> — an aspiring Unreal Engine Game Developer exploring real-time environments, technical artistry and interactive gameplay.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#playground">EXPLORE THE BUILD <span>↗</span></a><a class="text-link" href="#projects">VIEW PROJECTS <span>↓</span></a></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-label label-top">FIG 01 / DIGITAL TERRAIN</div>
+        <div class="wire-orbit orbit-one"></div><div class="wire-orbit orbit-two"></div>
+        <div class="terrain"><div class="terrain-sun"></div><div class="terrain-mountain m1"></div><div class="terrain-mountain m2"></div><div class="terrain-mountain m3"></div><div class="terrain-floor"></div></div>
+        <div class="crosshair">+</div><div class="art-label label-bottom">REAL-TIME ENVIRONMENT STUDY <span>01—04</span></div>
+      </div>
+      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><div class="scroll-line"></div><span class="coordinates">X: <b id="coordX">124.50</b> &nbsp; Y: <b id="coordY">087.20</b> &nbsp; Z: <b id="coordZ">032.00</b></span></div>
+    </section>
+
+    <section class="playground section-wrap" id="playground">
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> INTERACTIVE BUILD / 001</div><h2>THE <span class="blue-word">PLAYGROUND.</span></h2></div><div class="section-note">A SMALL WORLD. A LITTLE ROOM TO PLAY.<br><span>REAL-TIME / BROWSER EXPERIENCE</span></div></div>
+      <div class="game-shell">
+        <div class="game-topline"><span><i class="status-dot"></i> KANGAROO DASH — PARKOUR RUN</span><span>MODE: ENDLESS <b>● LIVE</b></span></div>
+        <div class="game-stage"><iframe class="game-frame" src="/kangaroo.html" title="Kangaroo Dash parkour game" allow="autoplay" loading="eager"></iframe></div>
+        <div class="game-controls"><div><span class="control-key">A</span><span class="control-key">D</span><small>MOVE</small></div><div><span class="control-key wide">W / SPACE</span><small>HOP / DOUBLE HOP</small></div><div><span class="control-key">S</span><small>FAST DROP</small></div><div class="game-hint">GRAB CARROTS. KEEP MOVING.</div></div>
+      </div>
+      <div class="game-caption"><span>01 / KANGAROO DASH</span><span>ENDLESS PARKOUR · CANVAS GAME</span><span>KEYBOARD OR TOUCH TO PLAY</span></div>
+    </section>
+
+    <section class="projects section-wrap" id="projects">
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> SELECTED WORK / 002</div><h2>PROJECT <span class="blue-word">ARCHIVE.</span></h2></div><div class="section-note">A COLLECTION OF WORLDS,<br>EXPERIMENTS &amp; BUILDS.</div></div>
+      <article class="project-card">
+        <div class="project-visual visual-environment"><div class="visual-sky"></div><div class="visual-mountain"></div><div class="visual-ground"></div><div class="visual-tree tree-a"></div><div class="visual-tree tree-b"></div><div class="visual-cube"></div><span class="visual-stamp">ENVIRONMENT STUDY / 01</span></div>
+        <div class="project-info"><div class="project-index">PROJECT_001 <span>PERSONAL STUDY</span></div><h3>THE QUIET<br>FRONTIER.</h3><p class="project-summary">A stylized environment study focused on composition, atmosphere and readable forms. Built to explore how lighting and material choices can give a small world its own character.</p><div class="meta-table"><div><span>ENGINE</span><b>UNREAL ENGINE 5</b></div><div><span>ROLE</span><b>ENVIRONMENT / LIGHTING</b></div><div><span>CORE TECH</span><b>LUMEN · MATERIALS</b></div><div><span>STATUS</span><b class="meta-blue">CONCEPT STUDY</b></div></div><a class="project-link" href="#contact">DISCUSS THIS PROJECT <span>↗</span></a></div>
+      </article>
+      <article class="project-card reverse">
+        <div class="project-visual visual-industrial"><div class="industrial-grid"></div><div class="industrial-block b1"></div><div class="industrial-block b2"></div><div class="industrial-block b3"></div><div class="industrial-light"></div><span class="visual-stamp">MATERIAL / LIGHT STUDY / 02</span></div>
+        <div class="project-info"><div class="project-index">PROJECT_002 <span>LOOK DEVELOPMENT</span></div><h3>AFTER<br>HOURS.</h3><p class="project-summary">An industrial lighting and material exploration built around contrast, controlled highlights and moody spatial design. The study tests a restrained palette with a strong visual focal point.</p><div class="meta-table"><div><span>ENGINE</span><b>UNREAL ENGINE 5</b></div><div><span>ROLE</span><b>LOOK DEV / LIGHTING</b></div><div><span>CORE TECH</span><b>POST PROCESS · PBR</b></div><div><span>STATUS</span><b class="meta-blue">IN PROGRESS</b></div></div><a class="project-link" href="#contact">DISCUSS THIS PROJECT <span>↗</span></a></div>
+      </article>
+      <p class="archive-note">MORE BUILDS WILL BE ADDED AS THEY LEAVE THE WORKSHOP. <span>///</span></p>
+    </section>
+
+    <section class="about section-wrap" id="about"><div class="about-left"><div class="eyebrow"><span class="eyebrow-line"></span> OPERATOR PROFILE / 003</div><h2>ART MEETS<br><span class="blue-word">ENGINEERING.</span></h2></div><div class="about-right"><p class="about-lead">Curious about how immersive game worlds come to life — from designing detailed environments to creating interactive gameplay experiences.</p><p>I’m developing my skills as an Unreal Engine Game Developer, focusing on environment creation, level design, lighting, materials and gameplay systems. This portfolio is my evolving development space — a place to build, experiment and showcase the worlds and experiences I create using Unreal Engine.</p><div class="skill-list"><span>UNREAL ENGINE 5</span><span>GAME DEVELOPMENT</span><span>ENVIRONMENT DESIGN</span><span>LEVEL DESIGN</span><span>LIGHTING</span><span>GAMEPLAY SYSTEMS</span></div></div></section>
+
+    <section class="contact section-wrap" id="contact"><div class="eyebrow"><span class="eyebrow-line"></span> OPEN CHANNEL / 004</div><h2>HAVE A WORLD<br>TO <span class="blue-word">BUILD?</span></h2><div class="contact-bottom"><p>Have a project, collaboration or just want to talk about games and environments? Let's connect.</p><a class="btn btn-primary" href="mailto:hello@abin.dev">START A CONVERSATION <span>↗</span></a></div></section>
+  </main>
+  <footer class="footer section-wrap"><a class="brand" href="#home"><span class="brand-mark">A<span>.</span></span><span>ABIN<span class="muted">.EXE</span></span></a><span>DESIGNED &amp; BUILT BY ABIN · 2026</span><span>END OF TRANSMISSION <b>■</b></span></footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
