@@ -1,43 +1,42 @@
-# ABIN.EXE — Technical Artist Portfolio
+# ABIN.EXE Portfolio
 
-A responsive dark industrial portfolio with an embedded, procedural low-poly driving playground built with Three.js.
+The existing Vite and vanilla JavaScript portfolio, GSAP motion, and embedded Kangaroo Dash game are served with a small Express CMS API. Project archive cards use published projects from PostgreSQL and keep the existing card markup and styles.
 
-## Requirements
-- Node.js 20.19+ (or a current Node.js release supported by Vite)
-- npm
+## Development
 
-## Run locally
+Requires Node.js 20.19+ and PostgreSQL. Configure `.env` from `.env.example`, then install dependencies:
 
 ```bash
 npm install
+npm run migrate
+npm run create-admin
+```
+
+Run the API and Vite separately in two terminals:
+
+```bash
+npm run dev:server
 npm run dev
 ```
 
-Open the local URL printed by Vite (usually http://localhost:5173).
+Vite runs on port 5173 and proxies `/api` to Express on port 3000. The server applies pending migrations at startup as well.
 
-## Production build
+## Production
 
 ```bash
 npm run build
-npm run preview
+npm start
 ```
 
-The production-ready static site is generated in `dist/` and can be deployed to Netlify, Vercel, GitHub Pages (with base-path configuration if hosted in a subfolder), or any static web host.
+Express serves the generated `dist` directory, API, project pages, admin routes, and `/kangaroo.html`. See [ADMIN_SETUP.md](ADMIN_SETUP.md) for database, Cloudinary, administrator, and Render setup.
 
-## Game controls
-- W / Up: accelerate
-- S / Down: reverse / brake
-- A / Left and D / Right: steer
-- Space: handbrake
-- R: reset the car
+## Admin routes
 
-Collect all eight floating data chips to finish the run. The scene is generated from Three.js primitives, so no external 3D assets are required.
+- `/admin/login`
+- `/admin/dashboard`
+- `/admin/projects`
+- `/admin/projects/new`
+- `/admin/projects/edit/:id`
+- `/projects/:slug`
 
-## Customise
-- Edit text, sections, navigation and project metadata in `index.html`.
-- Adjust colours, layout and responsive styling in `src/style.css` (`--blue` is the main accent).
-- Adjust the game world, props, car physics and controls in `src/main.js`.
-- Replace the placeholder `hello@abin.dev` mailto address and project studies with your real contact details and work before publishing.
-
-## Notes
-The portfolio uses Google Fonts when online and falls back to system fonts if unavailable. The embedded game requires WebGL. On mobile, the site layout is responsive, but the current driving controls are keyboard-first; add touch controls in `src/main.js` if mobile gameplay is a priority.
+The first admin is created through the interactive `npm run create-admin` command. Public registration is disabled. Cloudinary is required to upload images; uploaded files are never stored on the Render filesystem.

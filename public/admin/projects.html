@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121417">
+  <title>Projects | ABIN.EXE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="/admin/admin.js" defer></script>
+</head>
+<body data-page="projects">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="admin-brand" href="/"><span class="brand-mark">A<span>.</span></span><span>ABIN<span>.EXE</span></span></a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="side-nav"><a href="/admin/dashboard">Dashboard</a><a class="selected" href="/admin/projects">All Projects</a><a href="/admin/projects/new">Add Project</a></nav>
+      <div class="sidebar-bottom"><a href="/" target="_blank" rel="noopener">View Portfolio ↗</a><button class="logout-button" data-logout>Logout</button></div>
+    </aside>
+    <main class="admin-main">
+      <header class="page-top"><div><span class="admin-eyebrow">CONTENT LIBRARY / 002</span><h1>All projects<span>.</span></h1></div><a class="button primary" href="/admin/projects/new">ADD PROJECT <span>＋</span></a></header>
+      <p class="page-message" role="status" aria-live="polite"></p>
+      <section class="panel list-panel">
+        <div class="toolbar">
+          <label class="search-box"><span>SEARCH</span><input id="projectSearch" type="search" placeholder="Name, slug or category" autocomplete="off"></label>
+          <label class="filter-box"><span>PUBLICATION</span><select id="projectStatus"><option value="all">All statuses</option><option value="published">Published</option><option value="draft">Drafts</option></select></label>
+          <label class="filter-box"><span>SORT BY</span><select id="projectSort"><option value="updated_at">Recently updated</option><option value="display_order">Display order</option><option value="title">Name</option><option value="created_at">Date created</option></select></label>
+          <label class="filter-box"><span>ORDER</span><select id="projectDirection"><option value="desc">Descending</option><option value="asc">Ascending</option></select></label>
+        </div>
+        <div id="projectList" class="table-wrap"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

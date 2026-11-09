@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121417">
+  <title>Project Editor | ABIN.EXE Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="/admin/admin.js" defer></script>
+</head>
+<body data-page="editor">
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <a class="admin-brand" href="/"><span class="brand-mark">A<span>.</span></span><span>ABIN<span>.EXE</span></span></a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="side-nav"><a href="/admin/dashboard">Dashboard</a><a href="/admin/projects">All Projects</a><a class="selected" href="/admin/projects/new">Add Project</a></nav>
+      <div class="sidebar-bottom"><a href="/" target="_blank" rel="noopener">View Portfolio ↗</a><button class="logout-button" data-logout>Logout</button></div>
+    </aside>
+    <main class="admin-main editor-main">
+      <header class="page-top"><div><a class="back-link" href="/admin/projects">← ALL PROJECTS</a><span class="admin-eyebrow">PROJECT ARCHIVE / EDITOR</span><h1 id="editorTitle">New project<span>.</span></h1></div><span class="status-badge" id="editorStatus">NEW DRAFT</span></header>
+      <p class="page-message" role="status" aria-live="polite"></p>
+      <form id="projectForm" class="editor-form" novalidate>
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">A / IDENTIFICATION</span><h2>Basic information</h2></div></div>
+          <div class="form-grid">
+            <label class="wide-field">Project name <em>*</em><input name="title" maxlength="160" required></label>
+            <label>URL slug <em>*</em><input name="slug" maxlength="180" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*"><small>Used in the project detail URL.</small></label>
+            <label>Title line break after<input name="title_break_after" maxlength="100" placeholder="Optional heading wrap hint"></label>
+            <label>Category<input name="category" maxlength="120" placeholder="Environment Study"></label>
+            <label>Project status<input name="project_status" maxlength="120" placeholder="Concept Study, In Progress..."></label>
+            <label>Visual label<input name="visual_label" maxlength="160" placeholder="Environment Study / 01"></label>
+            <label class="wide-field">Short description <em>*</em><textarea name="short_description" rows="3" maxlength="500" required></textarea></label>
+            <label class="wide-field">Full description<textarea name="full_description" rows="7" maxlength="20000"></textarea></label>
+            <label>Completion date<input name="completion_date" type="date"></label>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">B / MEDIA</span><h2>Project screenshots</h2></div><span class="panel-note">JPG · PNG · WEBP / 12 MB MAX EACH</span></div>
+          <label class="upload-zone">Main cover screenshot <em>* to publish</em><input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp"><span class="upload-help">Choose a landscape image. Uploads go directly to Cloudinary.</span></label>
+          <label class="alt-field">Cover image alt text<input name="cover_alt_text" maxlength="300" placeholder="Describe the project cover image"></label>
+          <div id="coverPreview" class="cover-preview"></div>
+          <label class="upload-zone gallery-upload">Gallery screenshots<input id="galleryFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple><span class="upload-help">Select multiple images. Gallery order can be changed below.</span></label>
+          <div id="galleryPreview" class="gallery-preview"></div>
+          <div id="uploadProgress" class="upload-progress" hidden><span></span><b>0%</b></div>
+        </section>
+
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">C / DESTINATIONS</span><h2>Project links</h2></div></div>
+          <div class="form-grid">
+            <label>GitHub repository URL<input name="github_url" type="url" placeholder="https://github.com/..."></label>
+            <label>Live demo URL<input name="live_demo_url" type="url" placeholder="https://..."></label>
+            <label>Game demo URL<input name="game_url" type="url" placeholder="https://..."></label>
+            <label>Video URL<input name="video_url" type="url" placeholder="https://youtube.com/..."></label>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">D / BUILD DETAILS</span><h2>Technical details</h2></div></div>
+          <div class="form-grid">
+            <label>Engine<select name="engine"><option value="">Select engine</option><option>Unreal Engine 5</option><option>Unity</option><option>Blender</option><option>Three.js</option><option>Other</option></select></label>
+            <label>Project type<input name="project_type" maxlength="120" placeholder="Game, environment, tool..."></label>
+            <label>My role<input name="role" maxlength="200" placeholder="Environment art / lighting"></label>
+            <label>Platform<input name="platform" maxlength="300" placeholder="Windows, Web, PlayStation..."></label>
+            <label class="wide-field">Software and tools <small>Separate entries with commas.</small><input name="tools" placeholder="Unreal Engine, Blender, Substance Painter"></label>
+            <label class="wide-field">Technologies used <small>Separate entries with commas.</small><input name="technologies" placeholder="Lumen, Nanite, Blueprints"></label>
+            <label class="wide-field">Technical features <small>Separate entries with commas.</small><textarea name="technical_features" rows="3" placeholder="Procedural materials, dynamic lighting"></textarea></label>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">E / ATTRIBUTION</span><h2>Credits and copyright</h2></div><button class="button secondary small-button" id="addCredit" type="button">ADD CREDIT ＋</button></div>
+          <div id="creditsList" class="credits-list"></div>
+          <div class="form-grid separated">
+            <label class="wide-field">Copyright notice<textarea name="copyright_notice" rows="2" maxlength="2000"></textarea></label>
+            <label class="wide-field">Project ownership statement<textarea name="ownership_statement" rows="2" maxlength="2000" placeholder="Describe your contribution without claiming third-party assets."></textarea></label>
+            <label class="wide-field">Third-party acknowledgements<textarea name="third_party_acknowledgements" rows="3" maxlength="5000"></textarea></label>
+          </div>
+        </section>
+
+        <section class="panel form-panel">
+          <div class="panel-heading"><div><span class="admin-eyebrow">F / RELEASE</span><h2>Publishing</h2></div></div>
+          <div class="form-grid publish-grid">
+            <label>Publication date<input name="published_at_display" type="date" readonly></label>
+            <label>Display order<input name="display_order" type="number" min="0" step="1" value="0"></label>
+            <label class="check-field"><input name="is_featured" type="checkbox"> Featured project</label>
+          </div>
+          <p class="publish-hint">A cover screenshot is required before publishing. Drafts are only visible to administrators.</p>
+        </section>
+
+        <div class="editor-actions"><a class="button secondary" href="/admin/projects">CANCEL</a><div><button class="button secondary" id="previewProject" type="button">PREVIEW</button><button class="button secondary" id="saveDraft" type="button">SAVE DRAFT</button><button class="button primary" id="publishProject" type="button">PUBLISH PROJECT <span>↗</span></button></div></div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

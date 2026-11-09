@@ -49,14 +49,28 @@
 
     <section class="projects section-wrap" id="projects">
       <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> SELECTED WORK / 002</div><h2>PROJECT <span class="blue-word">ARCHIVE.</span></h2></div><div class="section-note">A COLLECTION OF WORLDS,<br>EXPERIMENTS &amp; BUILDS.</div></div>
-      <article class="project-card">
-        <div class="project-visual visual-environment"><div class="visual-sky"></div><div class="visual-mountain"></div><div class="visual-ground"></div><div class="visual-tree tree-a"></div><div class="visual-tree tree-b"></div><div class="visual-cube"></div><span class="visual-stamp">ENVIRONMENT STUDY / 01</span></div>
-        <div class="project-info"><div class="project-index">PROJECT_001 <span>PERSONAL STUDY</span></div><h3>THE QUIET<br>FRONTIER.</h3><p class="project-summary">A stylized environment study focused on composition, atmosphere and readable forms. Built to explore how lighting and material choices can give a small world its own character.</p><div class="meta-table"><div><span>ENGINE</span><b>UNREAL ENGINE 5</b></div><div><span>ROLE</span><b>ENVIRONMENT / LIGHTING</b></div><div><span>CORE TECH</span><b>LUMEN · MATERIALS</b></div><div><span>STATUS</span><b class="meta-blue">CONCEPT STUDY</b></div></div><a class="project-link" href="#contact">DISCUSS THIS PROJECT <span>↗</span></a></div>
-      </article>
-      <article class="project-card reverse">
-        <div class="project-visual visual-industrial"><div class="industrial-grid"></div><div class="industrial-block b1"></div><div class="industrial-block b2"></div><div class="industrial-block b3"></div><div class="industrial-light"></div><span class="visual-stamp">MATERIAL / LIGHT STUDY / 02</span></div>
-        <div class="project-info"><div class="project-index">PROJECT_002 <span>LOOK DEVELOPMENT</span></div><h3>AFTER<br>HOURS.</h3><p class="project-summary">An industrial lighting and material exploration built around contrast, controlled highlights and moody spatial design. The study tests a restrained palette with a strong visual focal point.</p><div class="meta-table"><div><span>ENGINE</span><b>UNREAL ENGINE 5</b></div><div><span>ROLE</span><b>LOOK DEV / LIGHTING</b></div><div><span>CORE TECH</span><b>POST PROCESS · PBR</b></div><div><span>STATUS</span><b class="meta-blue">IN PROGRESS</b></div></div><a class="project-link" href="#contact">DISCUSS THIS PROJECT <span>↗</span></a></div>
-      </article>
+      <div id="projectArchive" aria-live="polite" aria-busy="true"></div>
+      <template id="projectCardTemplate">
+        <article class="project-card">
+          <div class="project-visual visual-environment">
+            <div class="visual-fallback-environment"><div class="visual-sky"></div><div class="visual-mountain"></div><div class="visual-ground"></div><div class="visual-tree tree-a"></div><div class="visual-tree tree-b"></div><div class="visual-cube"></div><span class="visual-stamp"></span></div>
+            <div class="visual-fallback-industrial"><div class="industrial-grid"></div><div class="industrial-block b1"></div><div class="industrial-block b2"></div><div class="industrial-block b3"></div><div class="industrial-light"></div><span class="visual-stamp"></span></div>
+          </div>
+          <div class="project-info">
+            <div class="project-index"><span data-project-index></span><span data-project-category></span></div>
+            <h3 data-project-title></h3>
+            <p class="project-summary" data-project-summary></p>
+            <div class="meta-table">
+              <div><span>ENGINE</span><b data-project-engine></b></div>
+              <div><span>ROLE</span><b data-project-role></b></div>
+              <div><span>CORE TECH</span><b data-project-technologies></b></div>
+              <div><span>STATUS</span><b class="meta-blue" data-project-status></b></div>
+            </div>
+            <a class="project-link" data-project-detail><span>VIEW PROJECT</span> <span>↗</span></a>
+            <a class="project-link project-github" data-project-github target="_blank" rel="noopener noreferrer" hidden>GITHUB REPOSITORY <span>↗</span></a>
+          </div>
+        </article>
+      </template>
       <p class="archive-note">MORE BUILDS WILL BE ADDED AS THEY LEAVE THE WORKSHOP. <span>///</span></p>
     </section>
 

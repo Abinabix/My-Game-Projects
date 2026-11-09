@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121417">
+  <title>Admin Login | ABIN.EXE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="/admin/admin.js" defer></script>
+</head>
+<body data-page="login">
+  <main class="login-wrap">
+    <a class="admin-brand" href="/"><span class="brand-mark">A<span>.</span></span><span>ABIN<span>.EXE</span></span></a>
+    <section class="login-panel">
+      <div class="admin-eyebrow">ADMIN ACCESS / AUTHENTICATED SESSION</div>
+      <h1>WELCOME<br><span>BACK.</span></h1>
+      <p class="muted-copy">Sign in to manage the project archive.</p>
+      <form id="loginForm">
+        <label>Email address<input name="email" type="email" autocomplete="username" maxlength="254" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <p class="form-message" role="alert" aria-live="polite"></p>
+        <button class="button primary full-width" type="submit">SIGN IN <span>↗</span></button>
+      </form>
+      <a class="back-link" href="/">← RETURN TO PORTFOLIO</a>
+    </section>
+    <div class="login-foot">ABIN.EXE / SECURE ADMIN CONSOLE</div>
+  </main>
+</body>
+</html>
